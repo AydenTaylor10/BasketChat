@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+from chat import chat_process
 from llm import ask_llm
-from sports_api import get_player_stats, get_team_stats
+from sports_api import get_player_stats, get_team_info
 from prompt_builder import build_prompt
 
 def main():
@@ -19,9 +20,12 @@ def main():
 
         #build prompt from user input
         stats = ""
-        stats += get_player_stats(user_input)
-        stats += get_team_stats(user_input)
-
+        names = chat_process(user_input)
+        if names.get("player"):
+            stats += get_player_stats(names["player"])
+        if names.get("team"):
+            stats += get_team_info(names["team"])
+        
         AI_prompt = build_prompt(user_input, stats)
         AI_response = ask_llm(AI_prompt)
 
