@@ -18,7 +18,8 @@ def find_player(name: str) -> tuple[int, str]:
         #add player to results
         player = results_found[0]
         full_name = f"{player['first_name']} {player['last_name']}"
-        return player["id"], full_name
+        team_name = player["team"]["full_name"]
+        return player["id"], full_name, team_name
     #player not found
     return None
 
@@ -38,19 +39,22 @@ def find_team(name: str) -> tuple[int, str]:
 def get_player_stats(player_name: str) -> str:
     player_stats = find_player(player_name)
     if player_stats is None:
-        return ""
+        return "", ""
     
-    player_id, full_name = player_stats
+    player_id, full_name, team_name= player_stats
     #find player for this season
     stats_found = requests.get(f"{URL}/season_averages", headers=HEADERS_MAPPING, params={"player_ids[]": player_id, "season": 2025})
+    #stats_found = requests.get(f"{URL}/season_averages", headers=HEADERS_MAPPING, params={"player_ids[]": player_id, "season": 2025})
+    print(f"Status code: {stats_found.status_code}")
+    print(f"Response: {stats_found.text}")
 
-    averages= player_stats.json().get("data", [])
+    averages= stats_found.json().get("data", [])
     if not averages:
-        return ""
+        return "", team_name
     #return each statistical average for this season
     stats = averages[0]
-    return(f"{full_name} stats: ", f"{stats['pts']} PPG, ", f"{stats['reb']} RPG, ", f"{stats['ast']} APG, ", f"{stats['fg_pct']*100:.1f}% FG, ",f"{stats['fg3_pct']*100:.1f}% 3P, {stats['stl']} SPG, "
-    f"{stats['blk']} BPG, {stats['turnover']} TOV\n")
+    return(f"{full_name} stats: " f"{stats['pts']} PPG, " f"{stats['reb']} RPG, " f"{stats['ast']} APG, " f"{stats['fg_pct']*100:.1f}% FG, "f"{stats['fg3_pct']*100:.1f}% 3P, {stats['stl']} SPG, "
+    f"{stats['blk']} BPG, {stats['turnover']} TOV\n"), team_name
 
 def get_team_info(team_name:str) -> str:
     team_details = find_team(team_name)

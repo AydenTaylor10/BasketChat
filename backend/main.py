@@ -22,7 +22,10 @@ def main():
         stats = ""
         names = chat_process(user_input)
         if names.get("player"):
-            stats += get_player_stats(names["player"])
+            player_stats, player_team = get_player_stats(names["player"])
+            stats += player_stats
+            if player_team:
+                stats += get_matchup(player_team)
         if names.get("team"):
             stats += get_team_info(names["team"])
             stats += get_matchup(names["team"])
