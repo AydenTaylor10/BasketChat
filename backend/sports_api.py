@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+from datetime import date
 
 load_dotenv()
 
@@ -22,7 +23,7 @@ def find_player(name: str) -> tuple[int, str]:
     return None
 
 #find team id, name
-def find_team(name: str) -> tupe[int, str]:
+def find_team(name: str) -> tuple[int, str]:
     found = requests.get(f"{URL}/teams",headers=HEADERS_MAPPING,params={"search": name})
     team_results_found = found.json().get("data", [])
 
@@ -58,3 +59,23 @@ def get_team_info(team_name:str) -> str:
     #team name as details for now
     _, full_name = team_details
     return f"Team: {full_name}\n"
+
+
+def get_matchup(team_name: str)-> str:
+    matchup = find_team(team_name)
+    if not matchup:
+        return ""
+    team_id, full_name = matchup
+    matchup_tonight = date.today().isoformat()
+
+    found = requests.get(f"{URL}/games",headers=HEADERS_MAPPING,params={"dates[]": matchup_tonight, "team_ids[]": team_id})
+    matchups_found = found.json().get("data", [])
+
+    if not matchups_found:
+        return f"No game found for {full_name} tonight"
+    
+    game = matchups_found[0]
+    home_team = game["home_team"]["full_name"]
+    away_team = game["visitor_team"]["full_name"]
+    return f"Tonights matchup: {away_team} vs {home_team}"
+

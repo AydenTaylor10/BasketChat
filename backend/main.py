@@ -3,7 +3,7 @@ load_dotenv()
 
 from chat import chat_process
 from llm import ask_llm
-from sports_api import get_player_stats, get_team_info
+from sports_api import get_player_stats, get_team_info, get_matchup
 from prompt_builder import build_prompt
 
 def main():
@@ -13,9 +13,9 @@ def main():
     print("Hello, \n How can I assist your basketball inquiries?")
 
     while True:
-        user_input = ("Ask anything ('exit' to end session): ").strip()
+        user_input = input("Ask anything ('exit' to end session): ").strip()
 
-        if user_input.lower is "exit":
+        if user_input.lower() == "exit":
             break
 
         #build prompt from user input
@@ -25,6 +25,7 @@ def main():
             stats += get_player_stats(names["player"])
         if names.get("team"):
             stats += get_team_info(names["team"])
+            stats += get_matchup(names["team"])
         
         AI_prompt = build_prompt(user_input, stats)
         AI_response = ask_llm(AI_prompt)
