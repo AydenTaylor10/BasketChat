@@ -42,4 +42,19 @@ def get_player_stats(player_name: str) -> str:
     player_id, full_name = player_stats
     #find player for this season
     stats_found = requests.get(f"{URL}/season_averages", headers=HEADERS_MAPPING, params={"player_ids[]": player_id, "season": 2025})
-    
+
+    averages= player_stats.json().get("data", [])
+    if not averages:
+        return ""
+    #return each statistical average for this season
+    stats = averages[0]
+    return(f"{full_name} stats: ", f"{stats['pts']} PPG, ", f"{stats['reb']} RPG, ", f"{stats['ast']} APG, ", f"{stats['fg_pct']*100:.1f}% FG, ",f"{stats['fg3_pct']*100:.1f}% 3P, {stats['stl']} SPG, "
+    f"{stats['blk']} BPG, {stats['turnover']} TOV\n")
+
+def get_team_info(team_name:str) -> str:
+    team_details = find_team(team_name)
+    if team_details is None:
+        return""
+    #team name as details for now
+    _, full_name = team_details
+    return f"Team: {full_name}\n"
