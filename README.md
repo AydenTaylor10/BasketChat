@@ -1,6 +1,6 @@
 # 🏀 BasketChat - Your Basketball Betting Advisor
 
-A terminal-based AI assistant that provides data-driven insights for NBA betting decisions. Ask about player props, team matchups, and more — BasketChat pulls live 2025-26 season stats and uses Claude AI to give you analytical breakdowns.
+A terminal-based AI assistant that provides data-driven insights for NBA betting decisions. Ask about player props, team matchups, and more. BasketChat pulls live 2025-26 season stats and uses Claude AI to give you analytical breakdowns.
 
 > **Disclaimer:** For informational and entertainment purposes only. Not financial advice.
 
