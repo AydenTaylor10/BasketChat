@@ -8,9 +8,7 @@ A terminal-based AI assistant that provides data-driven insights for NBA betting
 
 ## Demo
 
-
-![BasketChat Demo 1](assets/LeBron8astExample.png)
-![BasketChat Demo 2](assets/Booker26ppgExample.png)
+<img src="assets/LeBron8astExample.png" width="500"/> <img src="assets/Booker26ppgExample.png" width="500"/>
 
 *Example queries:*
 - "Will LeBron James have over 8 assists tonight?"
