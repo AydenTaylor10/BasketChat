@@ -2,7 +2,7 @@ def build_prompt(user_message: str, stats_context: str) -> str:
 
     #builds a prompt
     if stats_context:
-        f"""The user is asking about a basketball betting decision. 
+        return f"""The user is asking about a basketball betting decision. 
 Here is relevant stats data pulled from a live sports API:
  
 {stats_context}
